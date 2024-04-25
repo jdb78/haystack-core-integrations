@@ -55,8 +55,10 @@ def convert_id(_id: str) -> str:
     Qdrant does not accept any string as an id, so an internal id has to be
     generated for each point. This is a deterministic way of doing so.
     """
-    return uuid.uuid5(UUID_NAMESPACE, _id).hex
-
+    try:
+        uuid.UUID(_id)
+    except ValueError:
+        return uuid.uuid5(UUID_NAMESPACE, _id).hex
 
 QdrantPoint = Union[rest.ScoredPoint, rest.Record]
 
